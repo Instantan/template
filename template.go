@@ -53,8 +53,8 @@ func (t *Template) DynamicValues() map[string]int {
 	return t.tagToIndex
 }
 
-func (t *Template) Execute(w io.Writer, fn func(w io.Writer, tag string) (int, error)) {
-	t.tmpl.ExecuteFunc(w, func(w io.Writer, index string) (int, error) {
+func (t *Template) Execute(w io.Writer, fn func(w io.Writer, tag string) (int, error)) (int64, error) {
+	return t.tmpl.ExecuteFunc(w, func(w io.Writer, index string) (int, error) {
 		return fn(w, t.indexToTag[index])
 	})
 }
