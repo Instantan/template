@@ -22,14 +22,14 @@ func Parse(template string) *Template {
 	templateID.Add(1)
 	template = prepareDynamicValues(template)
 	template = minifyTemplate(template)
-	template, tags := replaceTagsWithIndexes(template)
+	// template, tags := replaceTagsWithIndexes(template)
 	return &Template{
-		id:         int(templateID.Load()),
-		tmplStr:    template,
-		tmpl:       fasttemplate.New(template, "~", "~"),
-		isDynamic:  len(tags) > 0,
-		tagToIndex: tags,
-		indexToTag: convTagToIndexToIndexToTag(tags),
+		id:      int(templateID.Load()),
+		tmplStr: template,
+		tmpl:    fasttemplate.New(template, "~", "~"),
+		// isDynamic:  len(tags) > 0,
+		// tagToIndex: tags,
+		// indexToTag: convTagToIndexToIndexToTag(tags),
 	}
 }
 
@@ -60,7 +60,5 @@ func (t *Template) Execute(w io.Writer, fn func(w io.Writer, tag string) (int, e
 }
 
 func (t *Template) ExecuteString(fn func(w io.Writer, tag string) (int, error)) string {
-	return t.tmpl.ExecuteFuncString(func(w io.Writer, index string) (int, error) {
-		return fn(w, t.indexToTag[index])
-	})
+	return t.tmpl.ExecuteFuncString(fn)
 }
