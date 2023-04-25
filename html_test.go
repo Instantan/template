@@ -26,4 +26,8 @@ func TestParse(t *testing.T) {
 		t.Logf("Large Template len before compilation: %v", len(largeTemplate))
 		t.Logf("Large Template len after compilation: %v", len(tmpl.String()))
 	}
+	{
+		tmpl := template.Parse(largeTemplate)
+		t.Log(tmpl.ID())
+	}
 }
